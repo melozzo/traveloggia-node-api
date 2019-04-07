@@ -8,10 +8,9 @@ router.get('/dummy', mapController.dummy);
 
 router.post('/create', mapController.createMap)
 
- router.get('/list/:memberId', mapController.getList )
+router.get('/list/:memberId', mapController.getList )
 
- router.get('/last/:memberId', mapController.getLastMap )
-
+router.get('/last/:memberId', mapController.getLastMap )
 
 
 module.exports = router;

@@ -15,12 +15,12 @@ const expressApp = express();
 
 expressApp.use(bodyParser.json());  // because we will communicate with rest api posting json, not forms
 
-// expressApp.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//     next();
-// });
+expressApp.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 // bypass routintg system - path refers to file system used for static files like css
 //expressApp.use(express.static(path.join(__dirname ,'public' )))
 
