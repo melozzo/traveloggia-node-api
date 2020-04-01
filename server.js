@@ -27,7 +27,7 @@ expressApp.use((req, res, next) => {
 expressApp.use('/map', mapRoutes);
 
 mongoConnect( client => {
-    expressApp.listen(3060);
+    expressApp.listen(4000);
 
 })
 

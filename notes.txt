@@ -2,3 +2,17 @@ alternatives to express alternatives
 adonis.js
 koa,
 Sails.js
+
+When you issue a docker build command, the current working directory is called the build context.
+By default, the Dockerfile is assumed to be located here, but you can specify a different location with the file flag (-f). 
+Regardless of where the Dockerfile actually lives, 
+all recursive contents of files and directories in the current directory are sent to the Docker daemon as the build context.
+
+to build docker image use -t is the switch to give it a name (sort of)
+
+docker build -t traveloggia-node-api .
+
+
+
+
+//https://github.com/melozzo/traveloggia-node-api.git
