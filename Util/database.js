@@ -15,7 +15,7 @@ let _db;
 
 const mongoConnect = (callback) => {
     // db name is in the connection string - creates it if doesnt exist yet
-    MongoClient.connect('mongodb://mongo:27017/traveloggiaDB')
+    MongoClient.connect('mongodb://167.99.168.122:27017/traveloggiaDB')
     .then( client => {
         console.log('mongo traveloggiaDB connected')
         // you can pass in the name of the db you want to use
