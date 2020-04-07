@@ -1,59 +1,20 @@
-const getDb = require('./../Util/database').getDb;
+
 const Moment = require('moment');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 
-module.exports = class Map {
+const mapSchema = new Schema({
+        Name:{type:String, required:true},
+        MapID: {type:Number,required:true },
+        MemberID:{type:Number, },
+        IsDeleted:{type:Boolean, default:false},
+        CreateDate:{type:Date, required:true}     
+}, {collection:'Maps'})
 
-    constructor( memberId,  name) {
-        this.MemberId = memberId;
-        this.Name = name;
-        this.createDate = Moment().toDate();
-        this.isDeleted = false;
-    }
-
-   save() {
-        const db = getDb();
-        return db.collection('Maps')
-        .insertOne( this)
-        .then( result => {
-            console.log(result)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-
-   // static getList( memberId ) {
-        // const db = getDb();
-        // return db.collection('Maps')
-        // .find({memberID: memberId })
-        // .sort({"createDate": -1})// -1 desc, 1 assc
-        // .toArray()
-        // .then( maps => {
-        //     return maps
-        // })
-        // .catch( error => {
-        //     console.log(error)
-        // })
-   // }
-
-
-   // static getLastMap( memberId ) {
-        // const db = getDb();
-        // return db.collection('Maps')
-        // .find({memberID: memberId })
-        // .sort({"createDate": -1})// -1 desc, 1 assc
-        // .limit(1)
-        // .next()
-        // .then( map => {
-        //     return map
-        // })
-        // .catch( error => {
-        //     console.log(error)
-        // })
-   // }
+module.exports=mongoose.model('Map',mapSchema)
 
 
 
 
-}
+

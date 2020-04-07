@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 //const path = require('path');
 const mapRoutes = require('./Routes/mapRoutes');
 //const siteRoutes = require('./Routes/siteRoutes');
-const mongoConnect = require('./Util/database').mongoConnect;
+
+const mongoose = require('mongoose');
 
 
 
@@ -25,14 +26,22 @@ expressApp.use((req, res, next) => {
 //expressApp.use(express.static(path.join(__dirname ,'public' )))
 
 expressApp.use('/map', mapRoutes);
+//expressApp.use('/site', siteRoutes);
 
-mongoConnect( client => {
-    expressApp.listen(4000);
 
+
+mongoose
+.connect('mongodb://167.99.168.122:27017/traveloggiaDB')
+.then(result=>{
+        console.log("mongo db mongo death is connected")
+        expressApp.listen(8080);
+})
+.catch(error=>{
+        console.log(error)
 })
 
 
-//expressApp.use('/site', siteRoutes);
+
 
 
 //use is express method to add middleware =  ( request handlers )
