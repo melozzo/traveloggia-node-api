@@ -34,7 +34,7 @@ exports.createMap = (req, res, next ) => {
 exports.getList = ( req, res, next ) => {
         const memberId = req.params.memberId;
         console.log(memberId)
-        Map.find({MemberID:memberId}).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        Map.find({"MemberID":memberId}).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( maps => {
                 res.status(200).json(maps );
         })

@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 //const path = require('path');
 const mapRoutes = require('./Routes/mapRoutes');
+const memberRoutes = require('./Routes/memberRoutes')
 //const siteRoutes = require('./Routes/siteRoutes');
 
 const mongoose = require('mongoose');
@@ -26,12 +27,12 @@ expressApp.use((req, res, next) => {
 //expressApp.use(express.static(path.join(__dirname ,'public' )))
 
 expressApp.use('/map', mapRoutes);
-//expressApp.use('/site', siteRoutes);
+expressApp.use('/member', memberRoutes);
 
 
 
 mongoose
-.connect('mongodb://167.99.168.122:27017/traveloggiaDB')
+.connect('mongodb://138.68.12.0:27017/traveloggiaDB', { useNewUrlParser: true , useUnifiedTopology: true})
 .then(result=>{
         console.log("mongo db mongo death is connected")
         expressApp.listen(8080);
