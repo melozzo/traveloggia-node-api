@@ -35,7 +35,7 @@ mongoose
 .connect('mongodb://138.68.12.0:27017/traveloggiaDB', { useNewUrlParser: true , useUnifiedTopology: true})
 .then(result=>{
         console.log("mongo db mongo death is connected")
-        expressApp.listen(8080);
+        expressApp.listen(7070);
 })
 .catch(error=>{
         console.log(error)
