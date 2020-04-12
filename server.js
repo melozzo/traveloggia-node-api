@@ -3,8 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 //const path = require('path');
 const mapRoutes = require('./Routes/mapRoutes');
-const memberRoutes = require('./Routes/memberRoutes')
-//const siteRoutes = require('./Routes/siteRoutes');
+const memberRoutes = require('./Routes/memberRoutes');
+const siteRoutes = require('./Routes/siteRoutes');
+const photoRoutes = require('./Routes/photoRoutes')
 
 const mongoose = require('mongoose');
 
@@ -28,6 +29,8 @@ expressApp.use((req, res, next) => {
 
 expressApp.use('/map', mapRoutes);
 expressApp.use('/member', memberRoutes);
+expressApp.use('/site', siteRoutes);
+expressApp.use('/photo', photoRoutes);
 
 
 

@@ -3,7 +3,6 @@ const mapController = require('./../Controllers/mapController');
 
 const router = express.Router();
 
-router.get('/dummy', mapController.dummy);
 
 router.get('/list/:memberId', mapController.getList);
 

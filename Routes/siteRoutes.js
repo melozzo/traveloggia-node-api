@@ -4,9 +4,9 @@ const siteController = require('./../Controllers/siteController');
 
 const router = express.Router();
 
-router.get('/sites/:mapId', siteController.getSites);
+router.get('/list/:mapId', siteController.getList);
 
-router.get('/site/:siteId', siteController.getSite);
+router.get('/:siteId', siteController.getSite);
 
 module.exports = router;
 

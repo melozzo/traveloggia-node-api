@@ -1,4 +1,4 @@
-const Member = require('./../Models/members');
+const Member = require('../Models/member');
 const moment = require('moment');
 
 exports.login= ( req, res, next)=>{
@@ -20,11 +20,28 @@ exports.login= ( req, res, next)=>{
 exports.create = ( req, res, next)=>{
         let email = req.body.Email;
         let pwd = req.body.Password;
-        let createDate = moment().toDate().toLocalString();
+        let createDate = moment().format();
 
-        Member.findOne().sort({"MemberID":-1}).select("MemberID")
-        .then(maxMemberId)
-
-
+        Member.findOne({"Email":email})
+        .then(result=>{
+                if(result){
+                        throw new Error({message:"email already registered"})
+                } else {
+                        Member.findOne().sort({"MemberID":-1}).select("MemberID")
+                        .then(maxMemberId=>{
+                                let nextMemberId = maxMemberId.MemberID + 1;
+                                let member = new Member( {MemberID:nextMemberId, Email:email, Password:pwd, AccountCreateDate:createDate});
+                                member.save()
+                                .then( saved =>{
+                                        res.status(201).json(saved)
+                                })
+                                .catch(error=>{
+                                        console.log(error)
+                                })
+                
+                
+                        })
+                }
+        })
 
 }
