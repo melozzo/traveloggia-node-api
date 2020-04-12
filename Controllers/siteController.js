@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Site = require( './../Models/site');
+const moment = require("moment")
 
 
 
@@ -31,21 +32,34 @@ exports.getSite= ( req, res, next)=>{
 
 
 exports.createSite= ( req, res, next ) =>{
-    const lat = req.body.lat;
-    const long = req.body.long;
-    const name = req.body.name;
-    const description = req.body.description;
+    const lat =Number.parseFloat(req.body.Latitude).toFixed(5);
+    const long = req.body.Longitude;
+    const name = req.body.Name;
+    const description = req.body.Description;
+    const mapId = req.body.MapID;
 
+    Site.findOne().sort({"SiteID":-1}).select("SiteID")
+    .then( result =>{
+        let siteId = result.SiteID + 1;
+        const site = new Site({
+                "SiteID":siteId,
+                "MapID":mapId,
+                "Latitude":req.body.Latitude, 
+                "Longitude":long, 
+                "Name":name, 
+                "Description":description,
+                "DateAdded":moment().format()
+                });
+        site.save()
+        })
+        .then( result => {
+                res.status(201).json(result)
+        })
+        .catch(err=> {
+                console.log(err);
+        })
 
-
-    const site = new Site(lat, long, name, description);
-    site.save()
-    .then( result => {
-        console.log("site has been added");
-    })
-    .catch(err=> {
-        console.log(err);
-    })
+  
 
     
 

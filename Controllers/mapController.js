@@ -4,14 +4,13 @@ const moment = require('moment');
 
 exports.createMap = (req, res, next ) => {
         const name = req.body.Name;
-        const memberId = req.body.MemberId;
+        const memberId = req.body.MemberID;
         let mapId;
         Map.findOne().sort({"MapID": -1}).select("MapID")
         .then( result=>{
                 mapId = result.MapID + 1;
-                let map = new Map({MemberID:memberId, Name:name,MapID:mapId, CreateDate:moment().format()});
+                let map = new Map({MemberID:memberId, MapName:name,MapID:mapId, CreateDate:moment().format()});
                 map.save()
-               
         })
         .then( result => {
                 res.status(201).json(result);
@@ -61,7 +60,7 @@ exports.getAll = (req, res, next)=>{
 
 exports.getLastMap = ( req, res, next ) => {
         const memberId = req.params.memberId;
-        Map.findOne({"MemberID":memberId}).sort({"CreateDate":-1})
+        Map.findOne({"MemberID":parseInt(memberId)}).sort({"CreateDate":-1})
         .then( map => {
                 res.status(200).json(map);
         })
@@ -91,8 +90,7 @@ exports.updateMap = ( req, res, next) =>{
         .then( result =>{
                 if(!result)
                 throw error("map not found")
-           
-                result.Name = mapName;
+                result.MapName = mapName;
                 result.LastRevision = lastUpdated;
                 result.IsDeleted = isDeleted;
                 result.MemberID = memberId;
