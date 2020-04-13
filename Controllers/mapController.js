@@ -37,7 +37,7 @@ exports.getMap = (req, res, next)=>{
         const mapId = req.params.mapId;
         console.log("requested map id" ,mapId)
         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
-        Map.find({"MapID":mapId, "IsDeleted": false})
+        Map.findOne({"MapID":mapId, "IsDeleted": false})
         .then( map => {
                 res.status(200).json(map );
         })
@@ -82,11 +82,11 @@ exports.deleteMap = ( req,res, next) =>{
 
 exports.updateMap = ( req, res, next) =>{
         const mapId = req.params.mapId;
-        const mapName = req.body.Name;
-        const lastUpdated = moment().toDate().toLocaleString();
+        const mapName = req.body.MapName;
+        const lastUpdated = moment().format();
         const isDeleted = req.body.IsDeleted;
         const  memberId = req.body.MemberID; 
-        Map.findOne({"MapID":mapId})
+        Map.findOne({"MapID":req.params.mapId})
         .then( result =>{
                 if(!result)
                 throw error("map not found")
@@ -95,8 +95,6 @@ exports.updateMap = ( req, res, next) =>{
                 result.IsDeleted = isDeleted;
                 result.MemberID = memberId;
                 result.save();
-               
-
         })
         .then( updatedMap =>{
                 res.status(200).json(updatedMap);

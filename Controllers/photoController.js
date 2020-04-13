@@ -1,4 +1,4 @@
-const PHoto = require('../Models/Photo');
+const Photo = require('../Models/Photo');
 const moment = require('moment');
 
 
@@ -24,8 +24,8 @@ const moment = require('moment');
 // };
 
 exports.getList = ( req, res, next ) => {
-        const memberId = req.params.siteId;
-        Photo.find({"SiteID":siteId,"IsDeleted": false})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        const siteId = req.params.siteId;
+        Photo.find({"SiteID":parseInt(siteId),"IsDeleted": false})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( photos => {
                 res.status(200).json(photos );
         })
@@ -36,8 +36,7 @@ exports.getList = ( req, res, next ) => {
 }
 
 exports.getPhoto = (req, res, next)=>{
-        const photo = req.params.photoId;
-  
+        const photoId = req.params.photoId;
         Photo.find({"PhotoID":photoId, "IsDeleted": false})
         .then( photo => {
                 res.status(200).json(photo );

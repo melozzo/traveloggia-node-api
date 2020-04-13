@@ -6,7 +6,7 @@ const moment = require("moment")
 
 exports.getList = ( req, res, next ) => {
     const mapId = req.params.mapId;
-    Site.find({"MapID": parseInt(mapId)})
+    Site.find({"MapID": parseInt(mapId),"IsDeleted":false})
     .then( sites =>{
         res.status(200).json(sites );
     })
@@ -19,24 +19,22 @@ exports.getList = ( req, res, next ) => {
 exports.getSite= ( req, res, next)=>{
         const siteId = req.params.siteId
 
-        Site.find({"SiteID":siteId})
+        Site.findOne({"SiteID":siteId})
         .then( site =>{
                 return res.status(200).json(site)
         })
         .catch( err=>{
                 console.log(err)
         })
-
-
 }
 
 
 exports.createSite= ( req, res, next ) =>{
-    const lat =Number.parseFloat(req.body.Latitude).toFixed(5);
+    const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
     const long = req.body.Longitude;
     const name = req.body.Name;
     const description = req.body.Description;
-    const mapId = req.body.MapID;
+    const mapId = parseInt(req.body.MapID);
 
     Site.findOne().sort({"SiteID":-1}).select("SiteID")
     .then( result =>{
