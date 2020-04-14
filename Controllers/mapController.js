@@ -57,16 +57,7 @@ exports.getLastMap = ( req, res, next ) => {
         })
 }
 
-exports.deleteMap = ( req,res, next) =>{
-        const mapId = req.params.mapId;
-        Map.deleteOne({"MapID":mapId})
-        .then( result=>{
-                res.status(200).json(result);
-        })
-        .catch(error=>{
-            res.status(500).json(JSON.stringify(err))
-        })
-}
+
 
 exports.updateMap = ( req, res, next) =>{
         const mapId = req.params.mapId;
@@ -91,4 +82,15 @@ exports.updateMap = ( req, res, next) =>{
             res.status(500).json(JSON.stringify(err))
         })
        
+}
+
+exports.deleteMap = ( req,res, next) =>{
+      const mapId = req.params.mapId;
+      Map.update({"MapID":mapId}, {$set : {IsDeleted:true}})
+      .then( result=>{
+              res.status(200).json(result);
+      })
+      .catch(error=>{
+          res.status(500).json(JSON.stringify(err))
+      })
 }
