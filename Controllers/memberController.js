@@ -1,8 +1,7 @@
 const Member = require('../Models/member');
 const moment = require('moment');
 
-exports.login= ( req, res, next)=>{
-       
+exports.login= ( req, res, next)=>{      
         let email = req.body.Email;
         let pwd = req.body.Password;
 
@@ -13,7 +12,7 @@ exports.login= ( req, res, next)=>{
                 res.status(200).json(member)
         })
         .catch(error=>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
@@ -33,13 +32,11 @@ exports.create = ( req, res, next)=>{
                                 let member = new Member( {MemberID:nextMemberId, Email:email, Password:pwd, AccountCreateDate:createDate});
                                 member.save()
                                 .then( saved =>{
-                                        res.status(201).json(saved)
+                                        res.status(201).json(member)
                                 })
                                 .catch(error=>{
-                                        console.log(error)
+                                    res.status(500).json(JSON.stringify(err))
                                 })
-                
-                
                         })
                 }
         })

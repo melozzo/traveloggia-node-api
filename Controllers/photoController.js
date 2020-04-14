@@ -2,26 +2,35 @@ const Photo = require('../Models/Photo');
 const moment = require('moment');
 
 
+exports.createPhoto = (req, res, next ) => {
+        const siteId = req.body.SiteID;
+        const fileName = req.body.FileName;
+        const dateTaken = req.body.dateTaken;
+        const storageUrl = req.body.StorageURL;
+        const caption = req.body.Caption;
+        const isDeleted = req.body.IsDeleted;
 
-
-// exports.createMap = (req, res, next ) => {
-//         const name = req.body.Name;
-//         const memberId = req.body.MemberId;
-//         let mapId;
-//         Map.findOne().sort({"MapID": -1}).select("MapID")
-//         .then( result=>{
-//                 mapId = result.MapID + 1;
-//                 let map = new Map({MemberID:memberId, Name:name,MapID:mapId, CreateDate:moment().toLocaleString()});
-//                 map.save()
-               
-//         })
-//         .then( result => {
-//                 res.status(201).json(result);
-//         })
-//         .catch( error=>{
-//                 console.log(error)
-//         })
-// };
+        Photo.findOne().sort({"PhotoID": -1}).select("PhotoID")
+        .then( result=>{
+                let photoId = result.PhotoID + 1;
+                let photo = new Photo({
+                      PhotoID:photoId,
+                      SiteID: siteId,
+                      FileName:fileName,
+                      StorageURL:storageUrl,
+                      DateTaken:dateTaken,
+                      Caption:caption,
+                      DateAdded:moment().toLocaleString()}),
+                      IsDeleted = isDeleted
+                photo.save();
+        })
+        .then( result => {
+                res.status(201).json(result);
+        })
+        .catch( error=>{
+                res.status(500).json(JSON.stringify(error))
+        })
+};
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
@@ -30,10 +39,10 @@ exports.getList = ( req, res, next ) => {
                 res.status(200).json(photos );
         })
         .catch( error => {
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 
-}
+};
 
 exports.getPhoto = (req, res, next)=>{
         const photoId = req.params.photoId;
@@ -42,46 +51,44 @@ exports.getPhoto = (req, res, next)=>{
                 res.status(200).json(photo );
         })
         .catch( error => {
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
-}
+};
 
-
-// exports.deleteMap = ( req,res, next) =>{
-//         const mapId = req.params.mapId;
-//         Map.deleteOne({"MapID":mapId})
-//         .then( result=>{
-//                 res.status(200).json(result);
-//         })
-//         .catch(error=>{
-//                 console.log(error)
-//         })
-// }
-
-// exports.updateMap = ( req, res, next) =>{
-//         const mapId = req.params.mapId;
-//         const mapName = req.body.Name;
-//         const lastUpdated = moment().toDate().toLocaleString();
-//         const isDeleted = req.body.IsDeleted;
-//         const  memberId = req.body.MemberID; 
-//         Map.findOne({"MapID":mapId})
-//         .then( result =>{
-//                 if(!result)
-//                 throw error("map not found")
-           
-//                 result.Name = mapName;
-//                 result.LastRevision = lastUpdated;
-//                 result.IsDeleted = isDeleted;
-//                 result.MemberID = memberId;
-//                 result.save();
-               
-
-//         })
-//         .then( updatedMap =>{
-//                 res.status(200).json(updatedMap);
-//         })
-//         .catch( error =>{
-//                 console.log(error)
-//         })
+exports.updatePhoto = ( req, res, next) =>{
+      const photoId = req.params.photoId;
+      const siteId = req.body.SiteID;
+      const fileName = req.body.FileName;
+      const dateTaken = req.body.dateTaken;
+      const storageUrl = req.body.StorageURL;
+      const caption = req.body.Caption;
+      const isDeleted = req.body.IsDeleted;
+        Site.findOne({"SiteID":siteId})
+        .then( result =>{
+            result.SiteID = siteId;
+            result.FileName = fileName;
+            result.StorageURL = storageUrl;
+            result.DateTaken = dateTaken;
+            result.Caption = caption;
+            result.IsDeleted = isDeleted;
+            result.save();
+        })
+        .then( updatedPhoto =>{
+                res.status(204).json(updatedPhoto);
+        })
+        .catch( error =>{
+                res.status(500).json(JSON.stringify(error))
+        })
        
-// }
+};
+
+exports.deletePhoto = ( req, res, next )=>{
+      photoId = req.params.photoId;
+      Photo.update({PhotoID:photoId}, {$set:{IsDeleted:true}})
+      .then( ()=>{
+            res.status(200)
+      })
+      .catch(err=>{
+            res.status(500).json(JSON.stringify(err))
+      })
+};

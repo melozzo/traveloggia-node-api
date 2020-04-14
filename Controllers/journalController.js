@@ -3,20 +3,31 @@ const moment = require('moment');
 
 
 exports.createJournal = (req, res, next ) => {
-        const name = req.body.Name;
-        const memberId = req.body.MemberID;
-        let mapId;
-        Map.findOne().sort({"JournalID": -1}).select("JournalID")
-        .then( result=>{
-                journalId = result.JournalID + 1;
-                let journal = new Journal({MemberID:memberId, MapName:name,MapID:mapId, CreateDate:moment().format()});
-                map.save()
+      const siteId = req.body.SiteID;
+      const text = req.body.Text;
+      const title = req.body.Title;
+      const keyWords = req.body.KeyWords;
+      const isDeleted = req.body.IsDeleted;
+
+      Journal.findOne().sort({"JournalID": -1}).select("JournalID")
+      .then( result=>{
+            journalId = result.JournalID + 1;
+            let journal = new Journal({
+                  JournalID:journalId, 
+                  SiteID:siteId,
+                  Text:text,
+                  Title:title,
+                  JournalDate:journalDate,
+                  KeyWords:keyWords,
+                  IsDeleted:isDeleted,
+                  DateAdded:moment().format()});
+            map.save()
         })
         .then( result => {
                 res.status(201).json(result);
         })
         .catch( error=>{
-                console.log(error)
+                res.status(500).json(JSON.stringify(error))
         })
 };
 
@@ -27,7 +38,7 @@ exports.getList = ( req, res, next ) => {
                 res.status(200).json(journals );
         })
         .catch( error => {
-        console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 
 }
@@ -40,43 +51,44 @@ exports.getJournal = (req, res, next)=>{
                 res.status(200).json(journal );
         })
         .catch( error => {
-                console.log(error)
-        })
-}
-
-
-exports.deleteJournal = ( req,res, next) =>{
-        const journalId = req.params.journalId;
-        Journal.deleteOne({"MapID":mapId})
-        .then( result=>{
-                res.status(200).json(result);
-        })
-        .catch(error=>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
 exports.updateJournal = ( req, res, next) =>{
         const journalId = req.params.journalId;
-        const mapName = req.body.MapName;
-        const lastUpdated = moment().format();
+        const siteId = req.body.SiteID;
+        const text = req.body.Text;
+        const title = req.body.Title;
+        const keyWords = req.body.KeyWords;
+        const journalDate = req.body.JournalDate;
         const isDeleted = req.body.IsDeleted;
-        const  memberId = req.body.MemberID; 
-       Journal.findOne({"MapID":req.params.mapId})
+       Journal.findOne({JournalID:journalId})
         .then( result =>{
-                if(!result)
-                throw error("map not found")
-                result.MapName = mapName;
-                result.LastRevision = lastUpdated;
-                result.IsDeleted = isDeleted;
-                result.MemberID = memberId;
-                result.save();
+            result.SiteID = siteId;
+            result.Text = text;
+            result.Title = title;
+            result.JournalDate = journalDate;
+            result.KeyWords = keyWords;
+            result.isDeleted = isDeleted;
+            result.save();
         })
-        .then( updatedMap =>{
-                res.status(200).json(updatedMap);
+        .then( updatedJournal =>{
+                res.status(200).json(updatedJournal);
         })
         .catch( error =>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
        
+}
+
+exports.deleteJournal = ( req,res, next) =>{
+      const journalId = req.params.journalId;
+      Journal.update({"JournalId":journalId}, {$set:{IsDeleted:true}})
+      .then( ()=>{
+              res.status(200);
+      })
+      .catch(error=>{
+              res.status(500).json(JSON.stringify(error))
+      })
 }

@@ -10,7 +10,7 @@ const mapSchema = new Schema({
         IsDeleted:{type:Boolean, default:false},
         CreateDate:{type:Date, required:true},  
         LastRevision:{type:Date}   
-}, {collection:'Maps'})
+}, {collection:'Maps', timestamps:true})
 
 module.exports=mongoose.model('Map',mapSchema)
 

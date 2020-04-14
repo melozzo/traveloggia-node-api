@@ -16,7 +16,7 @@ exports.createMap = (req, res, next ) => {
                 res.status(201).json(result);
         })
         .catch( error=>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 };
 
@@ -28,7 +28,7 @@ exports.getList = ( req, res, next ) => {
                 res.status(200).json(maps );
         })
         .catch( error => {
-        console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 
 }
@@ -42,19 +42,7 @@ exports.getMap = (req, res, next)=>{
                 res.status(200).json(map );
         })
         .catch( error => {
-                console.log(error)
-        })
-}
-
-exports.getAll = (req, res, next)=>{
-     
-        Map.find()// mongoose converts string to object id 
-        .then( maps => {
-                res.status(200).json(maps);
-               
-        })
-        .catch( error => {
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
@@ -65,7 +53,7 @@ exports.getLastMap = ( req, res, next ) => {
                 res.status(200).json(map);
         })
         .catch( error => {
-        console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
@@ -76,7 +64,7 @@ exports.deleteMap = ( req,res, next) =>{
                 res.status(200).json(result);
         })
         .catch(error=>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
@@ -97,10 +85,10 @@ exports.updateMap = ( req, res, next) =>{
                 result.save();
         })
         .then( updatedMap =>{
-                res.status(200).json(updatedMap);
+                res.status(204).json(updatedMap);
         })
         .catch( error =>{
-                console.log(error)
+            res.status(500).json(JSON.stringify(err))
         })
        
 }

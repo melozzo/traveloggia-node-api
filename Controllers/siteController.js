@@ -11,7 +11,7 @@ exports.getList = ( req, res, next ) => {
         res.status(200).json(sites );
     })
     .catch(error => {
-        console.log(error)
+      res.status(500).json(JSON.stringify(err))
     })
 
 }
@@ -24,17 +24,24 @@ exports.getSite= ( req, res, next)=>{
                 return res.status(200).json(site)
         })
         .catch( err=>{
-                console.log(err)
+            res.status(500).json(JSON.stringify(err))
         })
 }
 
 
 exports.createSite= ( req, res, next ) =>{
-    const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
-    const long = req.body.Longitude;
-    const name = req.body.Name;
-    const description = req.body.Description;
-    const mapId = parseInt(req.body.MapID);
+      const mapId = parseInt(req.body.MapID);
+      const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
+      const long = req.body.Longitude;
+      const address = req.body.Address;
+      const name = req.body.Name;
+      const description = req.body.Description;
+      const email = req.body.Email;
+      const phone = req.body.Phone;
+      const arrival = req.body.Arrival;
+      const departure = req.body.Departure;
+      const routeIndex = req.body.RouteIndex;
+      const url = req.body.URL;
 
     Site.findOne().sort({"SiteID":-1}).select("SiteID")
     .then( result =>{
@@ -42,24 +49,76 @@ exports.createSite= ( req, res, next ) =>{
         const site = new Site({
                 "SiteID":siteId,
                 "MapID":mapId,
-                "Latitude":req.body.Latitude, 
+                "Latitude":lat, 
                 "Longitude":long, 
+                "Address":address,
                 "Name":name, 
                 "Description":description,
-                "DateAdded":moment().format()
+                "DateAdded":moment().format(),
+                "Phone":phone,
+                "Email":email,
+                "Arrival":arrival,
+                "Departure":departure,
+                "RouteIndex":routeIndex,
+                "URL":url
                 });
         site.save()
         })
         .then( result => {
-                res.status(201).json(result)
+                res.status(201).json(site)
         })
         .catch(err=> {
-                console.log(err);
+            res.status(500).json(JSON.stringify(err))
         })
+}
 
-  
+exports.updateSite = ( req, res, next)=>{
+      const siteId = req.params.siteId;
+      const mapId = parseInt(req.body.MapID);
+      const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
+      const long = req.body.Longitude;
+      const address = req.body.Address;
+      const name = req.body.Name;
+      const description = req.body.Description;
+      const email = req.body.Email;
+      const phone = req.body.Phone;
+      const arrival = req.body.Arrival;
+      const departure = req.body.Departure;
+      const routeIndex = req.body.RouteIndex;
+      const url = req.body.URL;
+      const deleted = req.body.isDeleted;
+      Site.findOne({SiteID:siteId})
+      .then( site =>{
+            site.MapID = mapId;
+            site.Latitude = lat;
+            site.Longitude = long
+            site.Name = name;
+            site.Address = address;
+            site.Phone = phone;
+            site.Email = email;
+            site.Description = description;
+            site.Arrival = arrival;
+            site.Departure = departure;
+            site.RouteIndex = routeIndex;
+            site.URL = url;
+            site.IsDeleted = deleted;
+            site.save();
+      })
+      .then( ()=>{
+            res.status(204).json(updatedSite)
+      })
+      .catch(err=>{
+            res.status(500).json(JSON.stringify(err))
+      })
+}
 
-    
-
-
+exports.deleteSite = (req, res, next )=>{
+      const siteId = req.params.siteId;
+      Site.update({SiteID:siteId}, {$set:{IsDeleted:true}})
+      .then( ()=>{
+            res.status(200)
+      })
+      .catch(err=>{
+            res.status(500).json(JSON.stringify(err))
+      })
 }

@@ -6,8 +6,6 @@ const router = express.Router();
 
 router.get('/list/:memberId', mapController.getList);
 
-router.get('/', mapController.getAll);
-
 router.get('/:mapId', mapController.getMap);
 
 router.post('/create', mapController.createMap);

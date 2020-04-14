@@ -12,7 +12,7 @@ const photoSchema = new Schema({
         Caption:{type:String},
         IsDeleted:{type:Boolean, default:false}
 
-}, {collection:"Photos"});
+}, {collection:"Photos", timestamps:true});
 
 
 module.exports = mongoose.model('Photo', photoSchema)

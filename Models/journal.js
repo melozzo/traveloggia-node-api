@@ -6,10 +6,11 @@ const journalSchema = new Schema({
         SiteID:{type:Number, required:true},
         Text:{type:String},
         Title:{type:String, required:true},
+        JournalDate:{type:Date},
         DateAdded:{type:Date, required:true},
         KeyWords:{type:String},
         IsDeleted:{type:Boolean, default:false}
 
-}, {collection:"Journals"})
+}, {collection:"Journals", timestamps:true})
 
 module.exports = mongoose.model('Journal',journalSchema)

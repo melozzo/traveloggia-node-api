@@ -11,7 +11,7 @@ const memberSchema = new Schema(
                 AccountCreateDate:{type:Date, required:true}
 
 
-        }, {collection:'Members'}// otherwise mongoose creates a collection named lowercase model name + letter "s"
+        }, {collection:'Members', timestamps:true}// otherwise mongoose creates a collection named lowercase model name + letter "s"
 )
 
 module.exports = mongoose.model("Member", memberSchema)
