@@ -33,7 +33,8 @@ exports.createJournal = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
-        Journal.find({"SiteID":siteId,"IsDeleted": false}).sort({"DateAdded": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        console.log("requesting journals for ", siteId)
+        Journal.find({"SiteID":siteId,IsDeleted:{ $not:{ $eq:true } }}).sort({"DateAdded": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( journals => {
                 res.status(200).json(journals );
         })
@@ -46,7 +47,7 @@ exports.getList = ( req, res, next ) => {
 exports.getJournal = (req, res, next)=>{
         const journalId = req.params.journalId;
         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
-        Journal.findOne({"JournalID":journalId, "IsDeleted": false})
+        Journal.findOne({"JournalID":journalId, IsDeleted:{ $not:{ $eq:true } }})
         .then( journal => {
                 res.status(200).json(journal );
         })

@@ -34,7 +34,7 @@ exports.createPhoto = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
-        Photo.find({"SiteID":parseInt(siteId),"IsDeleted": false})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        Photo.find({"SiteID":parseInt(siteId),IsDeleted:{ $not:{ $eq:true } }})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( photos => {
                 res.status(200).json(photos );
         })
@@ -46,7 +46,7 @@ exports.getList = ( req, res, next ) => {
 
 exports.getPhoto = (req, res, next)=>{
         const photoId = req.params.photoId;
-        Photo.find({"PhotoID":photoId, "IsDeleted": false})
+        Photo.find({"PhotoID":photoId, IsDeleted:{ $not:{ $eq:true } }})
         .then( photo => {
                 res.status(200).json(photo );
         })

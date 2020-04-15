@@ -22,8 +22,8 @@ exports.createMap = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const memberId = req.params.memberId;
-        console.log(memberId)
-        Map.find({"MemberID":memberId,"IsDeleted": false}).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+     
+        Map.find({"MemberID":memberId,IsDeleted:{ $not:{ $eq:true } } }).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( maps => {
                 res.status(200).json(maps );
         })
@@ -37,7 +37,7 @@ exports.getMap = (req, res, next)=>{
         const mapId = req.params.mapId;
         console.log("requested map id" ,mapId)
         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
-        Map.findOne({"MapID":mapId, "IsDeleted": false})
+        Map.findOne({"MapID":mapId, IsDeleted:{ $not:{ $eq:true } }})
         .then( map => {
                 res.status(200).json(map );
         })
@@ -48,7 +48,7 @@ exports.getMap = (req, res, next)=>{
 
 exports.getLastMap = ( req, res, next ) => {
         const memberId = req.params.memberId;
-        Map.findOne({"MemberID":parseInt(memberId)}).sort({"CreateDate":-1})
+        Map.findOne({"MemberID":parseInt(memberId), IsDeleted:{ $not:{ $eq:true } } }).sort({"CreateDate":-1})
         .then( map => {
                 res.status(200).json(map);
         })
@@ -56,8 +56,6 @@ exports.getLastMap = ( req, res, next ) => {
             res.status(500).json(JSON.stringify(err))
         })
 }
-
-
 
 exports.updateMap = ( req, res, next) =>{
         const mapId = req.params.mapId;

@@ -6,7 +6,7 @@ const moment = require("moment")
 
 exports.getList = ( req, res, next ) => {
     const mapId = req.params.mapId;
-    Site.find({"MapID": parseInt(mapId),"IsDeleted":false})
+    Site.find({"MapID": mapId,IsDeleted:{ $not:{ $eq:true } }})
     .then( sites =>{
         res.status(200).json(sites );
     })
