@@ -3,13 +3,14 @@ const Schema = mongoose.Schema;
 
 const journalSchema = new Schema({
         JournalID:{type:Number, required:true},
-        SiteID:{type:Number, required:true},
+        SiteID:{type:Number},
         Text:{type:String},
-        Title:{type:String, required:true},
+        Title:{type:String},
         JournalDate:{type:Date},
-        DateAdded:{type:Date, required:true},
+        DateAdded:{type:Date,},
         KeyWords:{type:String},
-        IsDeleted:{type:Boolean, default:false}
+        IsDeleted:{type:Boolean, default:false},
+        MemberID:{type:Number}
 
 }, {collection:"Journals", timestamps:true})
 

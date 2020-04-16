@@ -12,7 +12,7 @@ exports.login= ( req, res, next)=>{
                 res.status(200).json(member)
         })
         .catch(error=>{
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 }
 
@@ -35,7 +35,7 @@ exports.create = ( req, res, next)=>{
                                         res.status(201).json(member)
                                 })
                                 .catch(error=>{
-                                    res.status(500).json(JSON.stringify(err))
+                                    res.status(500).json(JSON.stringify(error))
                                 })
                         })
                 }

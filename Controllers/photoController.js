@@ -39,7 +39,8 @@ exports.getList = ( req, res, next ) => {
                 res.status(200).json(photos );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+              console.log(error)
+            res.status(500).json(JSON.stringify(error))
         })
 
 };

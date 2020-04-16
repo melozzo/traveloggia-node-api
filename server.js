@@ -41,6 +41,7 @@ mongoose
 .then(result=>{
         console.log("mongo db mongo death is connected")
         expressApp.listen(7070);
+        console.log("listening on port 7070")
 })
 .catch(error=>{
         console.log(error)

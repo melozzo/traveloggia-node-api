@@ -1,4 +1,4 @@
-const Journal = require('../Models/journal');
+const Journal = require('./../Models/journal');
 const moment = require('moment');
 
 
@@ -8,6 +8,7 @@ exports.createJournal = (req, res, next ) => {
       const title = req.body.Title;
       const keyWords = req.body.KeyWords;
       const isDeleted = req.body.IsDeleted;
+      const memberId = req.body.MemberID;
 
       Journal.findOne().sort({"JournalID": -1}).select("JournalID")
       .then( result=>{
@@ -22,24 +23,30 @@ exports.createJournal = (req, res, next ) => {
                   IsDeleted:isDeleted,
                   DateAdded:moment().format()});
             map.save()
-        })
-        .then( result => {
-                res.status(201).json(result);
+            .then( () => {
+                  res.status(201).json(journal);
+          })
+          .catch( error=>{
+                console.log(error)
+                  res.status(500).json(JSON.stringify(error))
+          })
         })
         .catch( error=>{
-                res.status(500).json(JSON.stringify(error))
-        })
+              console.log(error)
+            res.status(500).json(JSON.stringify(error))
+    })
 };
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
         console.log("requesting journals for ", siteId)
-        Journal.find({"SiteID":siteId,IsDeleted:{ $not:{ $eq:true } }}).sort({"DateAdded": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
-        .then( journals => {
-                res.status(200).json(journals );
+        Journal.find({SiteID:parseInt(siteId)})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        .then( result => {
+              
+                res.status(200).json(result );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 
 }
@@ -47,12 +54,12 @@ exports.getList = ( req, res, next ) => {
 exports.getJournal = (req, res, next)=>{
         const journalId = req.params.journalId;
         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
-        Journal.findOne({"JournalID":journalId, IsDeleted:{ $not:{ $eq:true } }})
-        .then( journal => {
-                res.status(200).json(journal );
+        Journal.findOne({JournalID:parseInt(journalId)})
+        .then( data => {
+                res.status(200).json(data );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 }
 
@@ -78,7 +85,7 @@ exports.updateJournal = ( req, res, next) =>{
                 res.status(200).json(updatedJournal);
         })
         .catch( error =>{
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
        
 }

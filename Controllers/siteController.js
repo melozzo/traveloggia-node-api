@@ -11,7 +11,7 @@ exports.getList = ( req, res, next ) => {
         res.status(200).json(sites );
     })
     .catch(error => {
-      res.status(500).json(JSON.stringify(err))
+      res.status(500).json(JSON.stringify(error))
     })
 
 }
@@ -63,10 +63,14 @@ exports.createSite= ( req, res, next ) =>{
                 "URL":url
                 });
         site.save()
+        .then( () => {
+            res.status(201).json(site)
+            })
+            .catch(err=> {
+                  res.status(500).json(JSON.stringify(err))
+            })
         })
-        .then( result => {
-                res.status(201).json(site)
-        })
+     
         .catch(err=> {
             res.status(500).json(JSON.stringify(err))
         })
@@ -102,12 +106,17 @@ exports.updateSite = ( req, res, next)=>{
             site.RouteIndex = routeIndex;
             site.URL = url;
             site.IsDeleted = deleted;
-            site.save();
-      })
-      .then( ()=>{
-            res.status(204).json(updatedSite)
+            site.save()
+            .then( ()=>{
+                  res.status(204).json(site)
+            })
+            .catch(err=>{
+                  console.log(err)
+                  res.status(500).json(JSON.stringify(err))
+            })
       })
       .catch(err=>{
+            console.log(err)
             res.status(500).json(JSON.stringify(err))
       })
 }
@@ -119,6 +128,7 @@ exports.deleteSite = (req, res, next )=>{
             res.status(200)
       })
       .catch(err=>{
+            console.log(err)
             res.status(500).json(JSON.stringify(err))
       })
 }

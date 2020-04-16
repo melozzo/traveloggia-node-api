@@ -3,7 +3,7 @@ const moment = require('moment');
 
 
 exports.createMap = (req, res, next ) => {
-        const name = req.body.Name;
+        const name = req.body.MapName;
         const memberId = req.body.MemberID;
         let mapId;
         Map.findOne().sort({"MapID": -1}).select("MapID")
@@ -11,12 +11,15 @@ exports.createMap = (req, res, next ) => {
                 mapId = result.MapID + 1;
                 let map = new Map({MemberID:memberId, MapName:name,MapID:mapId, CreateDate:moment().format()});
                 map.save()
-        })
-        .then( result => {
-                res.status(201).json(result);
+                .then( () => {
+                  res.status(201).json(map);
+                  })
+                  .catch( error=>{
+                        res.status(500).json(JSON.stringify(error))
+                  })
         })
         .catch( error=>{
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 };
 
@@ -28,7 +31,7 @@ exports.getList = ( req, res, next ) => {
                 res.status(200).json(maps );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 
 }
@@ -42,7 +45,7 @@ exports.getMap = (req, res, next)=>{
                 res.status(200).json(map );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 }
 
@@ -53,7 +56,7 @@ exports.getLastMap = ( req, res, next ) => {
                 res.status(200).json(map);
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 }
 
@@ -71,13 +74,19 @@ exports.updateMap = ( req, res, next) =>{
                 result.LastRevision = lastUpdated;
                 result.IsDeleted = isDeleted;
                 result.MemberID = memberId;
-                result.save();
+                result.save()
+                .then( updatedMap =>{
+                  res.status(204).json(updatedMap);
+                  })
+                  .catch( error =>{
+                        console.log(error)
+                        res.status(500).json(JSON.stringify(error))
+                  })
         })
-        .then( updatedMap =>{
-                res.status(204).json(updatedMap);
-        })
+       
         .catch( error =>{
-            res.status(500).json(JSON.stringify(err))
+              console.log(error)
+            res.status(500).json(JSON.stringify(error))
         })
        
 }
@@ -89,6 +98,6 @@ exports.deleteMap = ( req,res, next) =>{
               res.status(200).json(result);
       })
       .catch(error=>{
-          res.status(500).json(JSON.stringify(err))
+          res.status(500).json(JSON.stringify(error))
       })
 }
