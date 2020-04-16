@@ -12,6 +12,6 @@ const journalSchema = new Schema({
         IsDeleted:{type:Boolean, default:false},
         MemberID:{type:Number}
 
-}, {collection:"Journals", timestamps:true})
+}, {collection:"Journal", timestamps:true})
 
 module.exports = mongoose.model('Journal',journalSchema)
