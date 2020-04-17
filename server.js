@@ -10,8 +10,6 @@ const journalRoutes = require('./Routes/journalRoutes')
 
 const mongoose = require('mongoose');
 
-
-
 const expressApp = express();
 // parser middle ware goes first
 // calls next by automatically allowing access to body key pairs
