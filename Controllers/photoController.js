@@ -1,4 +1,4 @@
-const Photo = require('./../Models/Photo');
+const Photo = require('./../Models/photo');
 const moment = require('moment');
 
 
