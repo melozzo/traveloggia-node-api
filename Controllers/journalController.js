@@ -9,6 +9,7 @@ exports.createJournal = (req, res, next ) => {
       const keyWords = req.body.KeyWords;
       const isDeleted = req.body.IsDeleted;
       const memberId = req.body.MemberID;
+      const journalDate = req.body.JournalDate;
 
       Journal.findOne().sort({"JournalID": -1}).select("JournalID")
       .then( result=>{
