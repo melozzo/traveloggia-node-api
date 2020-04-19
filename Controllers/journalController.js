@@ -40,7 +40,6 @@ exports.createJournal = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
-        console.log("requesting journals for ", siteId)
         Journal.find({SiteID:parseInt(siteId)})
         .then( result => {
                 res.status(200).json(result );
@@ -81,8 +80,8 @@ exports.updateJournal = ( req, res, next) =>{
             result.isDeleted = isDeleted;
             result.save();
         })
-        .then( updatedJournal =>{
-                res.status(200).json(updatedJournal);
+        .then( result =>{
+                res.status(200).json(result);
         })
         .catch( error =>{
             res.status(500).json(JSON.stringify(error))
@@ -92,11 +91,18 @@ exports.updateJournal = ( req, res, next) =>{
 
 exports.deleteJournal = ( req,res, next) =>{
       const journalId = req.params.journalId;
-      Journal.update({"JournalId":journalId}, {$set:{IsDeleted:true}})
-      .then( ()=>{
-              res.status(200);
+     Journal.findOne({JournalID:journalId})
+      .then( result =>{
+          result.isDeleted = true;
+          result.save()
+          .then( deleted =>{
+                  res.status(200).json(deleted);
+            })
+            .catch( error =>{
+                  res.status(500).json(JSON.stringify(error))
+            })
       })
-      .catch(error=>{
-              res.status(500).json(JSON.stringify(error))
+      .catch( error =>{
+          res.status(500).json(JSON.stringify(error))
       })
 }

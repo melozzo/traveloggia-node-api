@@ -9,6 +9,7 @@ exports.createPhoto = (req, res, next ) => {
         const storageUrl = req.body.StorageURL;
         const caption = req.body.Caption;
         const deleted = req.body.IsDeleted;
+        const orientation = req.body.orientationID;
 
         Photo.findOne().sort({"PhotoID": -1}).select("PhotoID")
         .then( result=>{
@@ -22,7 +23,8 @@ exports.createPhoto = (req, res, next ) => {
                       Caption:caption,
                       DateAdded:moment().format(),
                       IsDeleted : deleted,
-                      StorageURL :storageUrl
+                      StorageURL :storageUrl,
+                      orientationID: orientation
                 })
                 photo.save();
         })
@@ -36,7 +38,7 @@ exports.createPhoto = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
-        Photo.find({"SiteID":parseInt(siteId),IsDeleted:{ $not:{ $eq:true } }})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        Photo.find({"SiteID":parseInt(siteId),IsDeleted:{ $not:{ $eq:true } }})
         .then( photos => {
                 res.status(200).json(photos );
         })
@@ -66,8 +68,9 @@ exports.updatePhoto = ( req, res, next) =>{
       const storageUrl = req.body.StorageURL;
       const caption = req.body.Caption;
       const isDeleted = req.body.IsDeleted;
+      const orientation = req.body.orientationID;
       
-        Site.findOne({"SiteID":siteId})
+       Photo.findOne({"PhotoID":photoId})
         .then( result =>{
             result.SiteID = siteId;
             result.FileName = fileName;
@@ -75,11 +78,16 @@ exports.updatePhoto = ( req, res, next) =>{
             result.DateTaken = dateTaken;
             result.Caption = caption;
             result.IsDeleted = isDeleted;
-            result.save();
+            result.orientationID = orientation;
+            result.save()
+            .then( updatedPhoto =>{
+                  res.status(204).json(updatedPhoto);
+          })
+          .catch( error =>{
+                  res.status(500).json(JSON.stringify(error))
+          })
         })
-        .then( updatedPhoto =>{
-                res.status(204).json(updatedPhoto);
-        })
+       
         .catch( error =>{
                 res.status(500).json(JSON.stringify(error))
         })
@@ -88,11 +96,19 @@ exports.updatePhoto = ( req, res, next) =>{
 
 exports.deletePhoto = ( req, res, next )=>{
       photoId = req.params.photoId;
-      Photo.update({PhotoID:photoId}, {$set:{IsDeleted:true}})
-      .then( ()=>{
-            res.status(200)
-      })
-      .catch(err=>{
-            res.status(500).json(JSON.stringify(err))
-      })
+      Photo.findOne({"PhotoID":photoId})
+        .then( result =>{
+            result.IsDeleted = true;
+            result.save()
+            .then( updatedPhoto =>{
+                  res.status(204).json(updatedPhoto);
+          })
+          .catch( error =>{
+                  res.status(500).json(JSON.stringify(error))
+          })
+        })
+       
+        .catch( error =>{
+                res.status(500).json(JSON.stringify(error))
+        })
 };

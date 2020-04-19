@@ -13,7 +13,8 @@ const photoSchema = new Schema({
         DateTaken:{type:Date},
         Caption:{type:String},
         IsDeleted:{type:Boolean, default:false},
-        StorageURL:{type:String, required:true}
+        StorageURL:{type:String, required:true},
+        orientationID:{type:Number}
 }, {collection:"Photos", timestamps:true})
 
 

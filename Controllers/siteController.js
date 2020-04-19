@@ -107,8 +107,8 @@ exports.updateSite = ( req, res, next)=>{
             site.URL = url;
             site.IsDeleted = deleted;
             site.save()
-            .then( ()=>{
-                  res.status(204).json(site)
+            .then( (updatedSite)=>{
+                  res.status(204).json(updatedSite)
             })
             .catch(err=>{
                   console.log(err)
@@ -123,9 +123,17 @@ exports.updateSite = ( req, res, next)=>{
 
 exports.deleteSite = (req, res, next )=>{
       const siteId = req.params.siteId;
-      Site.update({SiteID:siteId}, {$set:{IsDeleted:true}})
-      .then( ()=>{
-            res.status(200)
+      Site.findOne({SiteID:siteId})
+      .then( site =>{
+            site.IsDeleted = true;
+            site.save()
+            .then( (updatedSite)=>{
+                  res.status(204).json(updatedSite)
+            })
+            .catch(err=>{
+                  console.log(err)
+                  res.status(500).json(JSON.stringify(err))
+            })
       })
       .catch(err=>{
             console.log(err)

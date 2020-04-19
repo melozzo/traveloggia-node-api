@@ -25,7 +25,6 @@ exports.createMap = (req, res, next ) => {
 
 exports.getList = ( req, res, next ) => {
         const memberId = req.params.memberId;
-     
         Map.find({"MemberID":memberId,IsDeleted:{ $not:{ $eq:true } } }).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( maps => {
                 res.status(200).json(maps );
@@ -33,12 +32,10 @@ exports.getList = ( req, res, next ) => {
         .catch( error => {
             res.status(500).json(JSON.stringify(error))
         })
-
 }
 
 exports.getMap = (req, res, next)=>{
         const mapId = req.params.mapId;
-        console.log("requested map id" ,mapId)
         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
         Map.findOne({"MapID":mapId, IsDeleted:{ $not:{ $eq:true } }})
         .then( map => {
@@ -83,7 +80,6 @@ exports.updateMap = ( req, res, next) =>{
                         res.status(500).json(JSON.stringify(error))
                   })
         })
-       
         .catch( error =>{
               console.log(error)
             res.status(500).json(JSON.stringify(error))
@@ -93,11 +89,23 @@ exports.updateMap = ( req, res, next) =>{
 
 exports.deleteMap = ( req,res, next) =>{
       const mapId = req.params.mapId;
-      Map.update({"MapID":mapId}, {$set : {IsDeleted:true}})
-      .then( result=>{
-              res.status(200).json(result);
+      Map.findOne({"MapID":req.params.mapId})
+      .then( result =>{
+              if(!result)
+              throw error("map not found")            
+              result.IsDeleted = true;
+              result.save()
+              .then( updatedMap =>{
+                res.status(204).json(updatedMap);
+                })
+                .catch( error =>{
+                      console.log(error)
+                      res.status(500).json(JSON.stringify(error))
+                })
       })
-      .catch(error=>{
+     
+      .catch( error =>{
+            console.log(error)
           res.status(500).json(JSON.stringify(error))
       })
 }
