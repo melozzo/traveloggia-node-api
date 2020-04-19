@@ -23,7 +23,7 @@ exports.createJournal = (req, res, next ) => {
                   KeyWords:keyWords,
                   IsDeleted:isDeleted,
                   DateAdded:moment().format()});
-            map.save()
+            journal.save()
             .then( () => {
                   res.status(201).json(journal);
           })
@@ -41,9 +41,8 @@ exports.createJournal = (req, res, next ) => {
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
         console.log("requesting journals for ", siteId)
-        Journal.find({SiteID:parseInt(siteId)})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
+        Journal.find({SiteID:parseInt(siteId)})
         .then( result => {
-              
                 res.status(200).json(result );
         })
         .catch( error => {

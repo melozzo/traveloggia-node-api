@@ -8,8 +8,7 @@ exports.createPhoto = (req, res, next ) => {
         const dateTaken = req.body.dateTaken;
         const storageUrl = req.body.StorageURL;
         const caption = req.body.Caption;
-        const isDeleted = req.body.IsDeleted;
-        const storageUrl = request.body.StorageURL;
+        const deleted = req.body.IsDeleted;
 
         Photo.findOne().sort({"PhotoID": -1}).select("PhotoID")
         .then( result=>{
@@ -22,8 +21,8 @@ exports.createPhoto = (req, res, next ) => {
                       DateTaken:dateTaken,
                       Caption:caption,
                       DateAdded:moment().format(),
-                      IsDeleted = isDeleted,
-                      StorageURL = storageUrl
+                      IsDeleted : deleted,
+                      StorageURL :storageUrl
                 })
                 photo.save();
         })
@@ -67,8 +66,7 @@ exports.updatePhoto = ( req, res, next) =>{
       const storageUrl = req.body.StorageURL;
       const caption = req.body.Caption;
       const isDeleted = req.body.IsDeleted;
-      const storageUrl = request.body.StorageURL;
-
+      
         Site.findOne({"SiteID":siteId})
         .then( result =>{
             result.SiteID = siteId;
