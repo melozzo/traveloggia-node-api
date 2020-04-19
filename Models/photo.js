@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+/* storageURL =  amazon s3 - we need this to distinguish from old files stored on traveloggia.net 
+( to do move old images to amazon) */
 
 const photoSchema = new Schema({
         PhotoID:{type:Number, required:true},
@@ -12,7 +14,6 @@ const photoSchema = new Schema({
         Caption:{type:String},
         IsDeleted:{type:Boolean, default:false},
         StorageURL:{type:String, required:true}
-
 }, {collection:"Photos", timestamps:true})
 
 
