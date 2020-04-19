@@ -10,7 +10,8 @@ const photoSchema = new Schema({
         DateAdded:{type:Date, required:true},
         DateTaken:{type:Date},
         Caption:{type:String},
-        IsDeleted:{type:Boolean, default:false}
+        IsDeleted:{type:Boolean, default:false},
+        StorageURL:{type:String, required:true}
 
 }, {collection:"Photos", timestamps:true})
 
