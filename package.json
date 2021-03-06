@@ -14,11 +14,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@react-native-community/datetimepicker": "^2.4.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "mongodb": "^3.2.2",
     "mongoose": "^5.9.7",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "react-native-modal-datetime-picker": "^8.7.1"
   }
 }

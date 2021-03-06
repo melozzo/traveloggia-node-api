@@ -7,6 +7,7 @@ exports.createPhoto = (req, res, next ) => {
         const fileName = req.body.FileName;
         const dateTaken = req.body.dateTaken;
         const storageUrl = req.body.StorageURL;
+        const deviceStoreageUrl = req.body.DeviceStorageURL;
         const caption = req.body.Caption;
         const deleted = req.body.IsDeleted;
         const orientation = req.body.orientationID;
@@ -18,7 +19,7 @@ exports.createPhoto = (req, res, next ) => {
                       PhotoID:photoId,
                       SiteID: siteId,
                       FileName:fileName,
-                      StorageURL:storageUrl,
+                      DeviceStorageURL:deviceStorageUrl,
                       DateTaken:dateTaken,
                       Caption:caption,
                       DateAdded:moment().format(),
@@ -66,6 +67,7 @@ exports.updatePhoto = ( req, res, next) =>{
       const fileName = req.body.FileName;
       const dateTaken = req.body.dateTaken;
       const storageUrl = req.body.StorageURL;
+      const deviceStorageUrl = req.body.DeviceStorageURL;
       const caption = req.body.Caption;
       const isDeleted = req.body.IsDeleted;
       const orientation = req.body.orientationID;
@@ -75,6 +77,7 @@ exports.updatePhoto = ( req, res, next) =>{
             result.SiteID = siteId;
             result.FileName = fileName;
             result.StorageURL = storageUrl;
+            result.DeviceStorageURL = deviceStorageUrl;
             result.DateTaken = dateTaken;
             result.Caption = caption;
             result.IsDeleted = isDeleted;

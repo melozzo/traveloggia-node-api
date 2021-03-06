@@ -12,7 +12,7 @@ exports.createMap = (req, res, next ) => {
                 let map = new Map({MemberID:memberId, MapName:name,MapID:mapId, CreateDate:moment().format()});
                 map.save()
                 .then( () => {
-                  res.status(201).json(map);
+                        res.status(201).json(map);
                   })
                   .catch( error=>{
                         res.status(500).json(JSON.stringify(error))
@@ -24,7 +24,9 @@ exports.createMap = (req, res, next ) => {
 };
 
 exports.getList = ( req, res, next ) => {
+      
         const memberId = req.params.memberId;
+        console.log('getting map list for member', memberId)
         Map.find({"MemberID":memberId,IsDeleted:{ $not:{ $eq:true } } }).sort({"CreateDate": -1})// unling mongo mongoose doest not return a cursor here, so to array not needed, however need cursor to implement pagination if thats going to be a problem
         .then( maps => {
                 res.status(200).json(maps );
@@ -34,21 +36,36 @@ exports.getList = ( req, res, next ) => {
         })
 }
 
+// exports.getMap = (req, res, next)=>{
+//         const mapId = req.params.mapId;
+//         //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
+//         Map.findOne({"MapID":mapId, IsDeleted:{ $not:{ $eq:true } }})
+//         .then( map => {
+//                 res.status(200).json(map );
+//         })
+//         .catch( error => {
+//             res.status(500).json(JSON.stringify(error))
+//         })
+// }
+
+
 exports.getMap = (req, res, next)=>{
-        const mapId = req.params.mapId;
-        //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
-        Map.findOne({"MapID":mapId, IsDeleted:{ $not:{ $eq:true } }})
-        .then( map => {
-                res.status(200).json(map );
-        })
-        .catch( error => {
-            res.status(500).json(JSON.stringify(error))
-        })
+      const mapId = req.params.mapId;
+      //Map.findById(mapId)//only works with object id's mongoose converts string to object id 
+      Map.findOne({"MapID":mapId, IsDeleted:{ $not:{ $eq:true } }})
+      .populate({path:'Sites'})
+      .then( map => {
+              res.status(200).json(map );
+      })
+      .catch( error => {
+          res.status(500).json(JSON.stringify(error))
+      })
 }
 
 exports.getLastMap = ( req, res, next ) => {
         const memberId = req.params.memberId;
         Map.findOne({"MemberID":parseInt(memberId), IsDeleted:{ $not:{ $eq:true } } }).sort({"CreateDate":-1})
+        .populate({path:'Sites'})
         .then( map => {
                 res.status(200).json(map);
         })

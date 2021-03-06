@@ -8,7 +8,7 @@ const photoSchema = new Schema({
         PhotoID:{type:Number, required:true},
         SiteID:{type:Number, required:true},
         FileName:{type:String, required:true},
-        StorageURL:{type:String},
+        DeviceStorageURL:{type:String},
         DateAdded:{type:Date, required:true},
         DateTaken:{type:Date},
         Caption:{type:String},

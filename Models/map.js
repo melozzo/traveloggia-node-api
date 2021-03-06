@@ -1,6 +1,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Site = require( './site');
 
 
 const mapSchema = new Schema({
@@ -9,7 +10,8 @@ const mapSchema = new Schema({
         MemberID:{type:Number, },
         IsDeleted:{type:Boolean, default:false},
         CreateDate:{type:Date, required:true},  
-        LastRevision:{type:Date}   
+        LastRevision:{type:Date},
+        Sites : [{type: Schema.Types.ObjectId, ref: 'Site'}]  
 }, {collection:'Maps', timestamps:true})
 
 module.exports=mongoose.model('Map',mapSchema)

@@ -7,9 +7,9 @@ exports.login= ( req, res, next)=>{
 
         Member.findOne({"Email":email,"Password":pwd})
         .then( member =>{
-                if(! member)
-                        throw new Error("member not found");
-                res.status(200).json(member)
+            if(! member)
+                  throw new Error("member not found");
+            res.status(200).json(member)
         })
         .catch(error=>{
             res.status(500).json(JSON.stringify(error))
