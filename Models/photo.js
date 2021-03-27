@@ -9,11 +9,11 @@ const photoSchema = new Schema({
         SiteID:{type:Number, required:true},
         FileName:{type:String, required:true},
         DeviceStorageURL:{type:String},
-        DateAdded:{type:Date, required:true},
+        DateAdded:{type:Date},
         DateTaken:{type:Date},
         Caption:{type:String},
         IsDeleted:{type:Boolean, default:false},
-        StorageURL:{type:String, required:true},
+        StorageURL:{type:String},
         orientationID:{type:Number}
 }, {collection:"Photos", timestamps:true})
 

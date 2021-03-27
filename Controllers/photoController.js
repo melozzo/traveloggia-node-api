@@ -3,38 +3,39 @@ const moment = require('moment');
 
 
 exports.createPhoto = (req, res, next ) => {
+      console.log("entered create photo web service")
+      try {
         const siteId = req.body.SiteID;
         const fileName = req.body.FileName;
         const dateTaken = req.body.dateTaken;
-        const storageUrl = req.body.StorageURL;
-        const deviceStoreageUrl = req.body.DeviceStorageURL;
+        const storageUrl = "";
+        const deviceStorageUrl = req.body.DeviceStorageURL;
         const caption = req.body.Caption;
         const deleted = req.body.IsDeleted;
-        const orientation = req.body.orientationID;
-
-        Photo.findOne().sort({"PhotoID": -1}).select("PhotoID")
-        .then( result=>{
-                let photoId = result.PhotoID + 1;
-                let photo = new Photo({
+     
+      let photoId = 1098;
+      let photo = new Photo({
                       PhotoID:photoId,
                       SiteID: siteId,
                       FileName:fileName,
                       DeviceStorageURL:deviceStorageUrl,
-                      DateTaken:dateTaken,
+                      DateTaken:moment().format(),
                       Caption:caption,
                       DateAdded:moment().format(),
                       IsDeleted : deleted,
-                      StorageURL :storageUrl,
-                      orientationID: orientation
+                      StorageURL :"just a place",
                 })
-                photo.save();
-        })
-        .then( result => {
-                res.status(201).json(result);
-        })
-        .catch( error=>{
-                res.status(500).json(JSON.stringify(error))
-        })
+      photo.save()
+      .then( ()=>{
+            res.status(201).json(photo)
+      })
+      console.log("saved")
+
+            }
+  
+        catch( error){
+                res.status(500).json(JSON.stringify(error + "disaster"))
+        }
 };
 
 exports.getList = ( req, res, next ) => {
