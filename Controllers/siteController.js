@@ -46,8 +46,8 @@ exports.createSite= ( req, res, next ) =>{
 
     Site.findOne().sort({"SiteID":-1}).select("SiteID")
     .then( result =>{
-        let siteId = result.SiteID + 1;
-        const site = new Site({
+            let siteId = result.SiteID + 1;
+            const site = new Site({
                 "SiteID":siteId,
                 "MapID":mapId,
                 "Latitude":lat, 
@@ -63,15 +63,14 @@ exports.createSite= ( req, res, next ) =>{
                 "RouteIndex":routeIndex,
                 "URL":url
                 });
-        site.save()
-        .then( () => {
-            res.status(201).json(site)
-            })
-            .catch(err=> {
-                  res.status(500).json(JSON.stringify(err))
-            })
+            site.save()
+            .then( () => {
+                        res.status(201).json(site)
+                  })
+                  .catch(err=> {
+                        res.status(500).json(JSON.stringify(err))
+                  })
         })
-     
         .catch(err=> {
             res.status(500).json(JSON.stringify(err))
         })

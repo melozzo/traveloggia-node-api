@@ -1,42 +1,57 @@
 const Photo = require('./../Models/photo');
 const moment = require('moment');
+const { response } = require('express');
 
 
-exports.createPhoto = (req, res, next ) => {
-      console.log("entered create photo web service")
-      try {
-        const siteId = req.body.SiteID;
-        const fileName = req.body.FileName;
-        const dateTaken = req.body.dateTaken;
-        const storageUrl = "";
-        const deviceStorageUrl = req.body.DeviceStorageURL;
-        const caption = req.body.Caption;
-        const deleted = req.body.IsDeleted;
-     
-      let photoId = 1098;
-      let photo = new Photo({
-                      PhotoID:photoId,
-                      SiteID: siteId,
-                      FileName:fileName,
-                      DeviceStorageURL:deviceStorageUrl,
-                      DateTaken:moment().format(),
-                      Caption:caption,
-                      DateAdded:moment().format(),
-                      IsDeleted : deleted,
-                      StorageURL :"just a place",
-                })
-      photo.save()
-      .then( ()=>{
-            res.status(201).json(photo)
-      })
-      console.log("saved")
+exports.createPhoto = async (req, res, next)=>{
+    
+            Photo.findOne().sort({"PhotoID":-1})
+            .then( record =>{
+                  const nextID = record.PhotoID + 1;
+                  const siteId = req.body.SiteID;
+                  const fileName = req.body.FileName;
+                  const storageURL = req.body.StorageURL
+                  const deviceStorageUrl = req.body.DeviceStorageURL;
 
-            }
-  
-        catch( error){
-                res.status(500).json(JSON.stringify(error + "disaster"))
-        }
+                  const photo = new Photo({
+                        PhotoID:nextID,
+                        SiteID: siteId,
+                        FileName:fileName,
+                        DeviceStorageURL:deviceStorageUrl,
+                        StorageURL:storageURL,
+                        DateTaken:moment().format(),
+                        DateAdded:moment().format(),
+                  })
+                  
+                  photo.save()
+                  .then( ()=>{
+                        res.json(photo)
+                  })
+                  
+
+            })
+            .catch(error=>{
+                  console.log("no dice",error.message)
+                  res.json(JSON.stringify(error))
+            })
+           
+    
+ 
 };
+
+async function getID(){
+    console.log("get id called")
+      Photo.findOne().sort({"PhotoID":-1})
+      .then( record =>{
+            //console.log("got a result")
+           console.log(record.PhotoID)
+            return record.PhotoID ;
+      })
+      .catch(error=>{
+            console.log("no dice",error.message)
+      })
+}
+
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
@@ -58,7 +73,7 @@ exports.getPhoto = (req, res, next)=>{
                 res.status(200).json(photo );
         })
         .catch( error => {
-            res.status(500).json(JSON.stringify(err))
+            res.status(500).json(JSON.stringify(error))
         })
 };
 

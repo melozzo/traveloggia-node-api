@@ -3,7 +3,11 @@ const photoController = require('./../Controllers/photoController');
 
 const router = express.Router();
 
-router.get('/:photoId',photoController.getPhoto);
+
+//router.get('/collection/max', photoController.getMax);
+//router.get('/:photoId',photoController.getPhoto);
+
+router.post('/create', photoController.createPhoto)
 
 router.get('/list/:siteId',photoController.getList);
 
