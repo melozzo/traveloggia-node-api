@@ -39,19 +39,17 @@ exports.createPhoto = async (req, res, next)=>{
  
 };
 
-async function getID(){
-    console.log("get id called")
+exports.getMax = (req, res, next)=>{
+      console.log("get max id called")
       Photo.findOne().sort({"PhotoID":-1})
       .then( record =>{
-            //console.log("got a result")
-           console.log(record.PhotoID)
-            return record.PhotoID ;
+            console.log(`max photoID found ${record.PhotoID}`)
+            res.json(record)
       })
       .catch(error=>{
             console.log("no dice",error.message)
       })
 }
-
 
 exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
@@ -63,7 +61,6 @@ exports.getList = ( req, res, next ) => {
               console.log(error)
             res.status(500).json(JSON.stringify(error))
         })
-
 };
 
 exports.getPhoto = (req, res, next)=>{
