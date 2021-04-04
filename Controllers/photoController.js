@@ -111,20 +111,20 @@ exports.updatePhoto = ( req, res, next) =>{
 };
 
 exports.deletePhoto = ( req, res, next )=>{
-      photoId = req.params.photoId;
-      Photo.findOne({"PhotoID":photoId})
-        .then( result =>{
+     const id = req.params.photoId;
+      console.log("photo to detel is ",id)
+      Photo.findOne({"PhotoID":id})
+      .then( result =>{
             result.IsDeleted = true;
             result.save()
             .then( updatedPhoto =>{
-                  res.status(204).json(updatedPhoto);
-          })
-          .catch( error =>{
+            res.status(204).json(updatedPhoto);
+            })
+            .catch( error =>{
                   res.status(500).json(JSON.stringify(error))
-          })
-        })
-       
-        .catch( error =>{
+            })
+      })
+      .catch( error =>{
                 res.status(500).json(JSON.stringify(error))
         })
 };
