@@ -127,7 +127,7 @@ exports.updateSite = ( req, res, next)=>{
             })
 
       }catch(error){
-            console.log(error)
+            console.log("error updateing stie",error)
       }
 }
 
