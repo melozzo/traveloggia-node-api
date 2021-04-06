@@ -118,11 +118,13 @@ exports.updateSite = ( req, res, next)=>{
                   })
                   .catch(err=>{
                         console.log(err)
+                        console.log('not updating site')
                         res.status(500).json(JSON.stringify(err))
                   })
             })
             .catch(err=>{
                   console.log(err)
+                  console.log('not setting params for site')
                   res.status(500).json(JSON.stringify(err))
             })
 
