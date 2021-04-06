@@ -108,7 +108,7 @@ exports.updateSite = ( req, res, next)=>{
                   site.Email = email;
                   site.Description = description;
                   site.Arrival = arrival;
-                  site.Departure = departure;
+                 // site.Departure = departure;
                   site.RouteIndex = routeIndex;
                   site.URL = url;
                   site.IsDeleted = deleted;
