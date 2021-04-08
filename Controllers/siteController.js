@@ -113,27 +113,27 @@ exports.updateSite = ( req, res, next)=>{
                   site.URL = url;
                   site.IsDeleted = deleted;
                   site.save()
-                        .then( (updatedSite)=>{
+                        .then( ()=>{
                               console.log('api method update returned from save :)')
-                              res.status(204).json(updatedSite)
+                              res.status(204).json(site)
                         })
                         .catch(err=>{
                               console.log(err)
                               console.log('not updating site')
-                              res.status(502).json({msg:'failed to updat db'})
-                            //  res.status(502).json(JSON.stringify(err))
+                              
+                            res.status(502).json(JSON.stringify(err))
                         })
             })
             .catch(err=>{
                   console.log(err)
                   console.log('not setting params for site')
-                  res.status(503).json({msg:'failed to find one site'})
-                  //res.status(503).json(JSON.stringify(err))
+                
+                  res.status(503).json(JSON.stringify(err))
             })
 
       }catch(error){
             console.log("error updateing stie",error);
-            res.status(504).json({msg:'failed to marshal site params'})
+           // res.status(504).json({msg:'failed to marshal site params'})
       }
 }
 
