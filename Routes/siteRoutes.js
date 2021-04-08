@@ -8,7 +8,7 @@ router.get('/list/:mapId', siteController.getList);
 
 router.get('/:siteId', siteController.getSite);
 router.post('/update', siteController.updateSite);
-//router.post('/create', siteController.createSite);
+router.post('/create', siteController.createSite);
 
 
 
