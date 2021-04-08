@@ -10,7 +10,7 @@ router.get('/:siteId', siteController.getSite);
 
 router.post('/create', siteController.createSite);
 
-router.put('/update', siteController.updateSite);
+router.post('/update', siteController.updateSite);
 
 router.delete('/:siteId', siteController.deleteSite)
 
