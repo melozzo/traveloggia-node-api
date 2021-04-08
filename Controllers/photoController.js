@@ -55,6 +55,8 @@ exports.getList = ( req, res, next ) => {
         const siteId = req.params.siteId;
         Photo.find({"SiteID":parseInt(siteId),IsDeleted:{ $not:{ $eq:true } }})
         .then( photos => {
+              if(photos.length === 0)
+              console.log("zero photos for this site")
                 res.status(200).json(photos );
         })
         .catch( error => {

@@ -108,12 +108,13 @@ exports.updateSite = ( req, res, next)=>{
                   site.Email = email;
                   site.Description = description;
                   site.Arrival = arrival;
-                 // site.Departure = departure;
+                  site.Departure = departure;
                   site.RouteIndex = routeIndex;
                   site.URL = url;
                   site.IsDeleted = deleted;
                   site.save()
                   .then( (updatedSite)=>{
+                        console.log('api method update returned from save :)')
                         res.status(204).json(updatedSite)
                   })
                   .catch(err=>{
