@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/list/:mapId', siteController.getList);
 
 router.get('/:siteId', siteController.getSite);
-router.post('/update', siteController.updateSite);
+router.put('/update', siteController.updateSite);
 router.post('/create', siteController.createSite);
 
 
