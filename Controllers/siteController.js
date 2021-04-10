@@ -99,19 +99,19 @@ exports.updateSite = ( req, res, next)=>{
       
             Site.findOne({SiteID:siteId})
             .then( site =>{
-                  site.MapID = mapId;
-                  site.Latitude = lat;
-                  site.Longitude = long
+                //  site.MapID = mapId;
+                //  site.Latitude = lat;
+                 // site.Longitude = long
                   site.Name = name;
-                  site.Address = address;
-                  site.Phone = phone;
-                  site.Email = email;
-                  site.Description = description;
+                 // site.Address = address;
+                 // site.Phone = phone;
+                //  site.Email = email;
+                //  site.Description = description;
                   site.Arrival = arrival;
                   site.Departure = departure;
-                  site.RouteIndex = routeIndex;
-                  site.URL = url;
-                  site.IsDeleted = deleted;
+                //  site.RouteIndex = routeIndex;
+                 // site.URL = url;
+                 // site.IsDeleted = deleted;
                   site.save()
                         .then( ()=>{
                               console.log('api method update returned from save :)')
