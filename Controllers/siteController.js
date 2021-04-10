@@ -78,10 +78,10 @@ exports.createSite= ( req, res, next ) =>{
 }
 
 exports.updateSite = ( req, res, next)=>{
-      console.log("entered api update site")
-
+      console.log("entered api update site", req.body)
+      const siteId = req.params.siteId;
       try{
-           const siteId = req.body.SiteID;
+           
             const mapId = parseInt(req.body.MapID);
             const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
             const long = req.body.Longitude;
