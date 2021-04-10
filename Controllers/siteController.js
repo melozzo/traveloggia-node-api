@@ -80,61 +80,14 @@ exports.createSite= ( req, res, next ) =>{
 exports.updateSite = ( req, res, next)=>{
       console.log("entered api update site", req.body)
       const siteId = req.params.siteId;
-      try{
-           
-            const mapId = parseInt(req.body.MapID);
-            const lat =Number.parseFloat(req.body.Latitude).toFixed(6);
-            const long = req.body.Longitude;
-            const address = req.body.Address?req.body.Addres:"";
-            const name = req.body.Name;
-            const description = req.body.Description;
-            const email = req.body.Email? req.body.Email : "";
-            const phone = req.body.Phone?req.body.Phone:"";
-            const arrival = req.body.Arrival;
-            const departure = req.body.Departure;
-            const routeIndex = req.body.RouteIndex?req.Body.RouteIndex:"";
-            const url = req.body.URL?req.body.URL:"";
-            const deleted = req.body.isDeleted?req.body.isDeleted:false;
-    
-      
-            Site.findOne({SiteID:siteId})
-            .then( site =>{
-                //  site.MapID = mapId;
-                //  site.Latitude = lat;
-                 // site.Longitude = long
-                  site.Name = name;
-                 // site.Address = address;
-                 // site.Phone = phone;
-                //  site.Email = email;
-                //  site.Description = description;
-                  site.Arrival = arrival;
-                  site.Departure = departure;
-                //  site.RouteIndex = routeIndex;
-                 // site.URL = url;
-                 // site.IsDeleted = deleted;
-                  site.save()
-                        .then( ()=>{
-                              console.log('api method update returned from save :)')
-                              res.status(204)
-                        })
-                        .catch(err=>{
-                              console.log(err)
-                              console.log('not updating site')
-                              
-                            res.status(502).json(JSON.stringify(err))
-                        })
-            })
-            .catch(err=>{
-                  console.log(err)
-                  console.log('not setting params for site')
-                
-                  res.status(503).json(JSON.stringify(err))
+            Site.updateOne({SiteID:siteId},req.body, (result, error)=>{
+                  if(error)
+                        res.status(500).send(error);
+                  else
+                        res.status(200).json(result)
+
             })
 
-      }catch(error){
-            console.log("error updateing stie",error);
-            res.status(504).json(JSON.stringify(err))
-      }
 }
 
 exports.deleteSite = (req, res, next )=>{
