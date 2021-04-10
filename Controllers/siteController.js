@@ -115,7 +115,7 @@ exports.updateSite = ( req, res, next)=>{
                   site.save()
                         .then( ()=>{
                               console.log('api method update returned from save :)')
-                              res.status(204).json(site)
+                              res.status(204)
                         })
                         .catch(err=>{
                               console.log(err)
@@ -133,7 +133,7 @@ exports.updateSite = ( req, res, next)=>{
 
       }catch(error){
             console.log("error updateing stie",error);
-           // res.status(504).json({msg:'failed to marshal site params'})
+            res.status(504).json(JSON.stringify(err))
       }
 }
 
