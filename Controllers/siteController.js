@@ -9,10 +9,10 @@ exports.getList = ( req, res, next ) => {
     console.log("requested sites for mapId", mapId)
     Site.find({"MapID": mapId,IsDeleted:{ $not:{ $eq:true } }})
     .then( sites =>{
-        res.status(200).json(sites );
+            res.status(200).json(sites );
     })
     .catch(error => {
-      res.status(500).json(JSON.stringify(error))
+            res.status(500).json(JSON.stringify(error))
     })
 
 }
@@ -22,7 +22,7 @@ exports.getSite= ( req, res, next)=>{
 
         Site.findOne({"SiteID":siteId})
         .then( site =>{
-                return res.status(200).json(site)
+             res.status(200).json(site)
         })
         .catch( err=>{
             res.status(500).json(JSON.stringify(err))
@@ -83,8 +83,18 @@ exports.updateSite = ( req, res, next)=>{
       Site.findOneAndUpdate({SiteID:siteId},{$set: req.body}, (error, result)=>{
             if(error)
                   res.status(500).send(error);
-            else
-                  res.status(200).json(result)
+            else {
+                  Site.findOne({"SiteID":siteId})
+                  .then( site =>{
+                          res.status(200).json(site)
+                  })
+                  .catch( err=>{
+                      res.status(500).json(JSON.stringify(err))
+                  })
+
+               
+            }
+                  
 
       })
 
