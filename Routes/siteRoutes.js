@@ -10,7 +10,7 @@ router.get('/:siteId', siteController.getSite);
 
 
 
-router.put('/update/:siteId', siteController.updateSite);
+router.put('/:siteId', siteController.updateSite);
 
 
 
