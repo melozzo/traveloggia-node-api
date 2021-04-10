@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const Site = require( './../Models/site');
 const moment = require("moment")
 
-
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 
 exports.getList = ( req, res, next ) => {
     const mapId = req.params.mapId;
@@ -78,7 +81,7 @@ exports.createSite= ( req, res, next ) =>{
 }
 
 exports.updateSite = ( req, res, next)=>{
-      console.log("entered api update site", req.body)
+      console.log("welcome to update site api method desolee")
       const siteId = req.params.siteId;
       Site.findOneAndUpdate({SiteID:siteId},{$set: req.body}, (error, result)=>{
             if(error)
@@ -86,6 +89,7 @@ exports.updateSite = ( req, res, next)=>{
             else {
                   Site.findOne({"SiteID":siteId})
                   .then( site =>{
+                        console.log(site)
                           res.status(200).json(site)
                   })
                   .catch( err=>{
