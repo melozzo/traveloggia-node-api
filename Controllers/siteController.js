@@ -80,13 +80,13 @@ exports.createSite= ( req, res, next ) =>{
 exports.updateSite = ( req, res, next)=>{
       console.log("entered api update site", req.body)
       const siteId = req.params.siteId;
-            Site.updateOne({SiteID:siteId},req.body, (result, error)=>{
-                  if(error)
-                        res.status(500).send(error);
-                  else
-                        res.status(200).json(result)
+      Site.findOneAndUpdate({SiteID:siteId},{$set: req.body}, (error, result)=>{
+            if(error)
+                  res.status(500).send(error);
+            else
+                  res.status(200).json(result)
 
-            })
+      })
 
 }
 
