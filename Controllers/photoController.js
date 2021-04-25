@@ -31,6 +31,9 @@ exports.createPhoto = async (req, res, next)=>{
                         console.log("photo was saved works local but")
                         res.json(photo)
                   })
+                  .catch(error=>{
+                        res.json(JSON.stringify(error))
+                  })
                   
 
             })
