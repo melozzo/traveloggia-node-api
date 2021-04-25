@@ -1,10 +1,11 @@
 const Photo = require('./../Models/photo');
 const moment = require('moment');
 const { response } = require('express');
+const photo = require('./../Models/photo');
 
 
 exports.createPhoto = async (req, res, next)=>{
-    
+    console.log("entered create photo")
             Photo.findOne().sort({"PhotoID":-1})
             .then( record =>{
                   const nextID = record.PhotoID + 1;
@@ -12,6 +13,8 @@ exports.createPhoto = async (req, res, next)=>{
                   const fileName = req.body.FileName;
                   const storageURL = req.body.StorageURL
                   const deviceStorageUrl = req.body.DeviceStorageURL;
+                  const dateTaken = req.body.DateTaken;
+
 
                   const photo = new Photo({
                         PhotoID:nextID,
@@ -19,19 +22,20 @@ exports.createPhoto = async (req, res, next)=>{
                         FileName:fileName,
                         DeviceStorageURL:deviceStorageUrl,
                         StorageURL:storageURL,
-                        DateTaken:moment().format(),
-                        DateAdded:moment().format(),
+                        DateTaken:dateTaken,
+                        DateAdded:new Date(),
                   })
                   
-                  photo.save()
+                 photo.save()
                   .then( ()=>{
+                        console.log("photo was saved")
                         res.json(photo)
                   })
                   
 
             })
             .catch(error=>{
-                  console.log("no dice",error.message)
+                  console.log("error saving photo",error.message)
                   res.json(JSON.stringify(error))
             })
            
