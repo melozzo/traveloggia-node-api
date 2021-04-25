@@ -28,7 +28,7 @@ exports.createPhoto = async (req, res, next)=>{
                   
                  photo.save()
                   .then( ()=>{
-                        console.log("photo was saved")
+                        console.log("photo was saved works local but")
                         res.json(photo)
                   })
                   
