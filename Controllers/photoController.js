@@ -20,7 +20,7 @@ exports.createPhoto = async (req, res, next)=>{
                         PhotoID:nextID,
                         SiteID: siteId,
                         FileName:fileName,
-                        DeviceStorageURL:deviceStorageUrl,
+                        DeviceStorageURL:"file:///Users/athenacapsis/Library/Developer/CoreSimulator/Devices/08DFDCBF-4131-4B31-875D-B67603A5F9D0/data/Containers/Data/Application/7E034094-A6A8-4AD4-89B5-1989F1E53D49/Library/Caches/ExponentExperienceData/%2540melozzo%252FExpoSDK40/ImagePicker/4A4A3E1E-459A-4465-89B6-6B966AF7ADEF.jpg",
                         StorageURL:storageURL,
                         DateTaken:dateTaken,
                         DateAdded:new Date(),

@@ -1,7 +1,5 @@
 
-const express = require('express');
-const bodyParser = require('body-parser');
-//const path = require('path');
+const express= require('express');
 const mapRoutes = require('./Routes/mapRoutes');
 const memberRoutes = require('./Routes/memberRoutes');
 const siteRoutes = require('./Routes/siteRoutes');
@@ -15,7 +13,7 @@ const expressApp = express();
 // calls next by automatically allowing access to body key pairs
 //expressApp.use(bodyParser.urlencoded({extended: false})); // for forms
 
-expressApp.use(bodyParser.json());  // because we will communicate with rest api posting json, not forms
+expressApp.use(express.json());  // because we will communicate with rest api posting json, not forms
 
 expressApp.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
