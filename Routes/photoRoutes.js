@@ -17,6 +17,6 @@ router.delete('/:photoId', photoController.deletePhoto);
 
 router.post('/create', photoController.createPhoto);
 
-router.post('/test'), photoController.testPhoto )
+router.post('/test', photoController.testPhoto );
 
 module.exports = router;
