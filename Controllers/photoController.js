@@ -137,3 +137,10 @@ exports.deletePhoto = ( req, res, next )=>{
                 res.status(500).json(JSON.stringify(error))
         })
 };
+
+exports.testPhoto = ( req, res, next)=>{
+
+      const fileName = req.body.FileName;
+      res.status(200).json({"fileName":fileName})
+
+}
