@@ -46,6 +46,7 @@ exports.createSite = (req, res, next) => {
       const departure = req.body.Departure;
       const routeIndex = req.body.RouteIndex;
       const url = req.body.URL;
+      const links = [{"Title":"Farnese","URL":"https://traveloggia.pro/#/Map/22359"},{"Title":"coquelicots","URL":"https://traveloggia.pro/#/Map/22164"}]
 
       Site.findOne().sort({ "SiteID": -1 }).select("SiteID")
             .then(result => {
@@ -64,7 +65,7 @@ exports.createSite = (req, res, next) => {
                         "Arrival": arrival,
                         "Departure": departure,
                         "RouteIndex": routeIndex,
-                        "URL": url
+                        "Links": links
                   });
                   console.log(site)
                   site.save()

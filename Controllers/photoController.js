@@ -139,7 +139,6 @@ exports.deletePhoto = ( req, res, next )=>{
 };
 
 exports.testPhoto = ( req, res, next)=>{
-
       const fileName = req.body.FileName;
       res.status(200).json({"fileName":fileName})
 

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-
+const Link = require('./link');
 
 const siteSchema = new Schema({
         SiteID:{type:Number, required:true},
@@ -17,7 +16,11 @@ const siteSchema = new Schema({
         Arrival:{type:Date},
         Departure:{type:Date},
         RouteIndex:{type:Number},
-        URL:{type:String},
+        Links: {type: [{
+                "SiteID": Number,
+                "Title": String,
+                "URL": String
+        }]},
         IsDeleted:{type:Boolean}
 }, {collection:"Sites", timestamps:true})
 
