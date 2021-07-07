@@ -22,6 +22,7 @@ exports.getList = (req, res, next) => {
 exports.getSite = (req, res, next) => {
       const siteId = req.params.siteId
 
+
       Site.findOne({ "SiteID": siteId })
             .then(site => {
                   res.status(200).json(site)
@@ -82,15 +83,17 @@ exports.createSite = (req, res, next) => {
 }
 
 exports.updateSite = (req, res, next) => {
-      console.log("welcome to update site api method desolee")
+
       const siteId = req.params.siteId;
+      console.log("welcome to update site api method including links siteId:", siteId)
       Site.findOneAndUpdate({ SiteID: siteId }, { $set: req.body }, (error, result) => {
+            console.log('passing in', req.body)
             if (error)
                   res.status(500).send(error);
             else {
                   Site.findOne({ "SiteID": siteId })
                   .then(site => {
-                        console.log(site)
+                        console.log('found existing')
                         res.status(200).json(site)
                   })
                   .catch(err => {
@@ -99,6 +102,7 @@ exports.updateSite = (req, res, next) => {
             }
       })
 }
+
 
 exports.deleteSite = (req, res, next) => {
       const siteId = req.params.siteId;
