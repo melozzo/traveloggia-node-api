@@ -92,7 +92,7 @@ exports.updatePhoto = ( req, res, next) =>{
       const deviceStorageUrl = req.body.DeviceStorageURL;
       const caption = req.body.Caption;
       const isDeleted = req.body.IsDeleted;
-      const orientation = req.body.orientationID;
+     const orientation = req.body.orientationID;
       
        Photo.findOne({"PhotoID":photoId})
         .then( result =>{
